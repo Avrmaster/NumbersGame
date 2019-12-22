@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.10/p5.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.10/addons/p5.dom.js"></script>
+
+<script>
+    let answer = ""
+    let inputs = [];
+    function setup() {
+        createCanvas(800, 640);
+        for (let i=0; i<2; i++) {
+            let input = createInput("", "text");
+            input.position(window.width/2-300, 100+170*i);
+            input.size(600, 150);
+            input.style("font-size", "90px");
+            inputs.push(input);
+        }
+    }
+    let t=0;
+    let BACK_RECTS_HOR_COUNT = 15;
+    let scl = 800/BACK_RECTS_HOR_COUNT;
+    function draw() {
+        background(51);
+        t += 0.16;
+
+        for (let i=0; i<BACK_RECTS_HOR_COUNT; i++) {
+            for (let j=0; j<BACK_RECTS_HOR_COUNT; j++) {
+                var blue = 50+200*noise(i/10+t/5, j/10+t/10);
+                fill(0, 60, blue, 200);
+                rect(i*scl, j*scl, scl, scl);
+            }
+        }
+
+
+        fill(255);
+        textSize(90);
+        textAlign(CENTER);
+        refresh();
+        text(answer, 400, inputs[1].y+inputs[1].height+100);
+    }
+    function refresh() {
+        var in1 = inputs[0].value();
+        var in2 = inputs[1].value();
+
+        if (in1.length!=in2.length) {
+            answer="";
+            return;
+        }
+
+        var ans1=0, ans2=0;
+        for (let i=0; i<in2.length; i++) {
+            if (in1.indexOf(in2.charAt(i))!=-1) {
+                ans1++;
+            }
+            if (in1.charAt(i)==in2.charAt(i)) {
+                ans2++;
+            }
+        }
+        answer = ans1+":"+ans2;
+    }
+</script>
+
+<body>
+</body>
+
+</html>
